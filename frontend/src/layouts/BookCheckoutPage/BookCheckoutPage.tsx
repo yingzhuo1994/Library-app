@@ -9,8 +9,7 @@ import { useOktaAuth } from "@okta/okta-react";
 import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 export const BookCheckoutPage = () => {
-  // const { authState } = useOktaAuth();
-  const authState = false;
+  const { authState } = useOktaAuth();
 
   const [book, setBook] = useState<BookModel>();
   const [isLoading, setIsLoading] = useState(true);
@@ -114,11 +113,93 @@ export const BookCheckoutPage = () => {
     });
   }, [isReviewLeft]);
 
+  //   useEffect(() => {
+  //     const fetchUserReviewBook = async () => {
+  //       if (authState && authState.isAuthenticated) {
+  //         const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
+  //         const requestOptions = {
+  //           method: "GET",
+  //           headers: {
+  //             Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         };
+  //         const userReview = await fetch(url, requestOptions);
+  //         if (!userReview.ok) {
+  //           throw new Error("Something went wrong");
+  //         }
+  //         const userReviewResponseJson = await userReview.json();
+  //         setIsReviewLeft(userReviewResponseJson);
+  //       }
+  //       setIsLoadingUserReview(false);
+  //     };
+  //     fetchUserReviewBook().catch((error: any) => {
+  //       setIsLoadingUserReview(false);
+  //       setHttpError(error.message);
+  //     });
+  //   }, [authState]);
+
+  useEffect(() => {
+    const fetchUserCurrentLoansCount = async () => {
+      if (authState && authState.isAuthenticated) {
+        const url = `http://localhost:8080/api/books/secure/currentloans/count`;
+        const requestOptions = {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+        const currentLoansCountResponse = await fetch(url, requestOptions);
+        if (!currentLoansCountResponse.ok) {
+          throw new Error("Something went wrong!");
+        }
+        const currentLoansCountResponseJson =
+          await currentLoansCountResponse.json();
+        setCurrentLoansCount(currentLoansCountResponseJson);
+      }
+      setIsLoadingCurrentLoansCount(false);
+    };
+    fetchUserCurrentLoansCount().catch((error: any) => {
+      setIsLoadingCurrentLoansCount(false);
+      setHttpError(error.message);
+    });
+  }, [authState, isCheckedOut]);
+
+  useEffect(() => {
+    const fetchUserCheckedOutBook = async () => {
+      if (authState && authState.isAuthenticated) {
+        const url = `http://localhost:8080/api/books/secure/ischeckedout/byuser?bookId=${bookId}`;
+        const requestOptions = {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+        const bookCheckedOut = await fetch(url, requestOptions);
+
+        if (!bookCheckedOut.ok) {
+          throw new Error("Something went wrong!");
+        }
+
+        const bookCheckedOutResponseJson = await bookCheckedOut.json();
+        setIsCheckedOut(bookCheckedOutResponseJson);
+      }
+      setIsLoadingBookCheckedOut(false);
+    };
+    fetchUserCheckedOutBook().catch((error: any) => {
+      setIsLoadingBookCheckedOut(false);
+      setHttpError(error.message);
+    });
+  }, [authState]);
+
   if (
-    isLoading || isLoadingReview 
-    // || isLoadingCurrentLoansCount ||
-    // isLoadingBookCheckedOut ||
-    // isLoadingUserReview
+    isLoading ||
+    isLoadingReview ||
+    isLoadingCurrentLoansCount ||
+    isLoadingBookCheckedOut
+    // || isLoadingUserReview
   ) {
     return <SpinnerLoading />;
   }
@@ -130,7 +211,6 @@ export const BookCheckoutPage = () => {
       </div>
     );
   }
-
   return (
     <div>
       <div className="container d-none d-lg-block">
@@ -159,7 +239,7 @@ export const BookCheckoutPage = () => {
             book={book}
             mobile={false}
             currentLoansCount={currentLoansCount}
-            // isAuthenticated={authState?.isAuthenticated}
+            isAuthenticated={authState?.isAuthenticated}
             isCheckedOut={isCheckedOut}
             checkoutBook={checkoutBook}
             isReviewLeft={isReviewLeft}
@@ -194,7 +274,7 @@ export const BookCheckoutPage = () => {
           book={book}
           mobile={true}
           currentLoansCount={currentLoansCount}
-          //   isAuthenticated={authState?.isAuthenticated}
+          isAuthenticated={authState?.isAuthenticated}
           isCheckedOut={isCheckedOut}
           checkoutBook={checkoutBook}
           isReviewLeft={isReviewLeft}
@@ -205,93 +285,13 @@ export const BookCheckoutPage = () => {
       </div>
     </div>
   );
-  //   useEffect(() => {
-  //     const fetchUserReviewBook = async () => {
-  //       if (authState && authState.isAuthenticated) {
-  //         const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
-  //         const requestOptions = {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${authState.accessToken?.accessToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         };
-  //         const userReview = await fetch(url, requestOptions);
-  //         if (!userReview.ok) {
-  //           throw new Error("Something went wrong");
-  //         }
-  //         const userReviewResponseJson = await userReview.json();
-  //         setIsReviewLeft(userReviewResponseJson);
-  //       }
-  //       setIsLoadingUserReview(false);
-  //     };
-  //     fetchUserReviewBook().catch((error: any) => {
-  //       setIsLoadingUserReview(false);
-  //       setHttpError(error.message);
-  //     });
-  //   }, [authState]);
-
-  //   useEffect(() => {
-  //     const fetchUserCurrentLoansCount = async () => {
-  //       if (authState && authState.isAuthenticated) {
-  //         const url = `http://localhost:8080/api/books/secure/currentloans/count`;
-  //         const requestOptions = {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${authState.accessToken?.accessToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         };
-  //         const currentLoansCountResponse = await fetch(url, requestOptions);
-  //         if (!currentLoansCountResponse.ok) {
-  //           throw new Error("Something went wrong!");
-  //         }
-  //         const currentLoansCountResponseJson =
-  //           await currentLoansCountResponse.json();
-  //         setCurrentLoansCount(currentLoansCountResponseJson);
-  //       }
-  //       setIsLoadingCurrentLoansCount(false);
-  //     };
-  //     fetchUserCurrentLoansCount().catch((error: any) => {
-  //       setIsLoadingCurrentLoansCount(false);
-  //       setHttpError(error.message);
-  //     });
-  //   }, [authState, isCheckedOut]);
-
-  //   useEffect(() => {
-  //     const fetchUserCheckedOutBook = async () => {
-  //       if (authState && authState.isAuthenticated) {
-  //         const url = `http://localhost:8080/api/books/secure/ischeckedout/byuser/?bookId=${bookId}`;
-  //         const requestOptions = {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${authState.accessToken?.accessToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         };
-  //         const bookCheckedOut = await fetch(url, requestOptions);
-
-  //         if (!bookCheckedOut.ok) {
-  //           throw new Error("Something went wrong!");
-  //         }
-
-  //         const bookCheckedOutResponseJson = await bookCheckedOut.json();
-  //         setIsCheckedOut(bookCheckedOutResponseJson);
-  //       }
-  //       setIsLoadingBookCheckedOut(false);
-  //     };
-  //     fetchUserCheckedOutBook().catch((error: any) => {
-  //       setIsLoadingBookCheckedOut(false);
-  //       setHttpError(error.message);
-  //     });
-  //   }, [authState]);
 
   async function checkoutBook() {
-    const url = `http://localhost:8080/api/books/secure/checkout/?bookId=${book?.id}`;
+    const url = `http://localhost:8080/api/books/secure/checkout?bookId=${book?.id}`;
     const requestOptions = {
       method: "PUT",
       headers: {
-        // Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+        Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
         "Content-Type": "application/json",
       },
     };
@@ -317,7 +317,7 @@ export const BookCheckoutPage = () => {
     const requestOptions = {
       method: "POST",
       headers: {
-        // Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+        Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(reviewRequestModel),

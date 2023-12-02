@@ -40,6 +40,7 @@ public class BookController {
     public Boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,
                                       @RequestParam Long bookId) {
 //        String userEmail = "test@email.com";
+//        System.out.println("ischeckedout test");
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
@@ -50,7 +51,9 @@ public class BookController {
                               @RequestParam Long bookId)
             throws Exception {
 //        String userEmail = "test@email.com";
+        System.out.println("checkout test");
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+        System.out.println(userEmail);
         return bookService.checkoutBook(userEmail, bookId);
     }
 
