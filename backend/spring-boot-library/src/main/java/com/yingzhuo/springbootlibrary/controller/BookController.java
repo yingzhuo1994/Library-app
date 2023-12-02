@@ -3,7 +3,7 @@ package com.yingzhuo.springbootlibrary.controller;
 import com.yingzhuo.springbootlibrary.entity.Book;
 //import com.yingzhuo.springbootlibrary.responsemodels.ShelfCurrentLoansResponse;
 import com.yingzhuo.springbootlibrary.service.BookService;
-//import com.yingzhuo.springbootlibrary.utils.ExtractJWT;
+import com.yingzhuo.springbootlibrary.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,30 +30,27 @@ public class BookController {
 //    }
 
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount(
-//            @RequestHeader(value = "Authorization") String token
-    ) {
-//        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
-        String userEmail = "test@email.com";
+    public int currentLoansCount(@RequestHeader(value = "Authorization") String token) {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+//        String userEmail = "test@email.com";
         return bookService.currentLoansCount(userEmail);
     }
 
     @GetMapping("/secure/ischeckedout/byuser")
-    public Boolean checkoutBookByUser(
-//            @RequestHeader(value = "Authorization") String token,
+    public Boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,
                                       @RequestParam Long bookId) {
-        String userEmail = "test@email.com";
-//        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+//        String userEmail = "test@email.com";
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
 
     @PutMapping("/secure/checkout")
     public Book checkoutBook (
-//            @RequestHeader(value = "Authorization") String token,
+            @RequestHeader(value = "Authorization") String token,
                               @RequestParam Long bookId)
             throws Exception {
-        String userEmail = "test@email.com";
-//        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+//        String userEmail = "test@email.com";
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBook(userEmail, bookId);
     }
 
