@@ -113,31 +113,31 @@ export const BookCheckoutPage = () => {
     });
   }, [isReviewLeft]);
 
-  //   useEffect(() => {
-  //     const fetchUserReviewBook = async () => {
-  //       if (authState && authState.isAuthenticated) {
-  //         const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
-  //         const requestOptions = {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${authState.accessToken?.accessToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         };
-  //         const userReview = await fetch(url, requestOptions);
-  //         if (!userReview.ok) {
-  //           throw new Error("Something went wrong");
-  //         }
-  //         const userReviewResponseJson = await userReview.json();
-  //         setIsReviewLeft(userReviewResponseJson);
-  //       }
-  //       setIsLoadingUserReview(false);
-  //     };
-  //     fetchUserReviewBook().catch((error: any) => {
-  //       setIsLoadingUserReview(false);
-  //       setHttpError(error.message);
-  //     });
-  //   }, [authState]);
+    useEffect(() => {
+      const fetchUserReviewBook = async () => {
+        if (authState && authState.isAuthenticated) {
+          const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
+          const requestOptions = {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          };
+          const userReview = await fetch(url, requestOptions);
+          if (!userReview.ok) {
+            throw new Error("Something went wrong");
+          }
+          const userReviewResponseJson = await userReview.json();
+          setIsReviewLeft(userReviewResponseJson);
+        }
+        setIsLoadingUserReview(false);
+      };
+      fetchUserReviewBook().catch((error: any) => {
+        setIsLoadingUserReview(false);
+        setHttpError(error.message);
+      });
+    }, [authState]);
 
   useEffect(() => {
     const fetchUserCurrentLoansCount = async () => {
@@ -199,7 +199,7 @@ export const BookCheckoutPage = () => {
     isLoadingReview ||
     isLoadingCurrentLoansCount ||
     isLoadingBookCheckedOut
-    // || isLoadingUserReview
+    || isLoadingUserReview
   ) {
     return <SpinnerLoading />;
   }
