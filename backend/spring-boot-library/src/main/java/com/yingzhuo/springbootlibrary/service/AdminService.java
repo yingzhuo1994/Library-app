@@ -77,7 +77,7 @@ public class AdminService {
         }
 
         bookRepository.delete(book.get());
-//        checkoutRepository.deleteAllByBookId(bookId);
-//        reviewRepository.deleteAllByBookId(bookId);
+        checkoutRepository.deleteAllByBookId(bookId);
+        reviewRepository.deleteAllByBookId(bookId);
     }
 }

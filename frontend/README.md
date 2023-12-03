@@ -48,3 +48,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 # Test User Account
 user: test@email.com
 pwd: LibraryApp2023
+
+# Admin User Account
+user: admin@email.com
+pwd: LibraryApp2023

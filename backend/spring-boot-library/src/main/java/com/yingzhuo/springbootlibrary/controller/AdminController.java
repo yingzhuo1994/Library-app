@@ -55,6 +55,7 @@ public class AdminController {
         if (admin == null || !admin.equals("admin")) {
             throw new Exception("Administration page only");
         }
+        
         adminService.deleteBook(bookId);
     }
 
