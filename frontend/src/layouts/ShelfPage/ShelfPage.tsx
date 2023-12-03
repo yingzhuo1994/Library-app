@@ -6,7 +6,6 @@ import { Navigate } from "react-router-dom";
 
 export const ShelfPage = () => {
   const { authState } = useOktaAuth();
-  console.log(authState?.isAuthenticated);
 
   const [historyClick, setHistoryClick] = useState(false);
   if (authState?.isAuthenticated) {
@@ -51,7 +50,6 @@ export const ShelfPage = () => {
               aria-labelledby="nav-loans-tab"
             >
               <Loans/>
-              {/* <p>Loans</p> */}
             </div>
             <div
               className="tab-pane fade"
@@ -59,8 +57,7 @@ export const ShelfPage = () => {
               role="tabpanel"
               aria-labelledby="nav-history-tab"
             >
-              {/* {historyClick ? <HistoryPage/> : <></>} */}
-              <p>Checkout History</p>
+              {historyClick ? <HistoryPage/> : <></>}
             </div>
           </div>
         </div>
