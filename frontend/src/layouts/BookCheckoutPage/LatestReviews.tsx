@@ -5,9 +5,6 @@ import { Review } from "../Utils/Review";
 export const LatestReviews: React.FC<{
     reviews: ReviewModel[], bookId: number | undefined, mobile: boolean
 }> = (props) => {
-    console.log("test"); 
-    console.log(props.reviews.length); 
-
     return (
         <div className={props.mobile ? 'mt-3' : 'row mt-5'}>
             <div className={props.mobile ? '' : 'col-sm-2 col-md-2'}>
