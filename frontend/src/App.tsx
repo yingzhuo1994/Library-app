@@ -1,17 +1,19 @@
 import React from "react";
 import "./App.css";
 
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { OktaAuth, toRelativeUrl } from "@okta/okta-auth-js";
+import { Security, LoginCallback, SecureRoute } from "@okta/okta-react";
+
 import { Navbar } from "./layouts/NavbarAndFooter/Navbar";
 import { Footer } from "./layouts/NavbarAndFooter/Footer";
 import { HomePage } from "./layouts/HomePage/HomePage";
 import { SearchBooksPage } from "./layouts/SearchBooksPage/SearchBooksPage";
 import { ReviewListPage } from "./layouts/BookCheckoutPage/ReviewListPage/ReviewListPage";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { BookCheckoutPage } from "./layouts/BookCheckoutPage/BookCheckoutPage";
+import { ManageLibraryPage } from "./layouts/ManageLibraryPage/ManageLibraryPage";
 import { ShelfPage } from "./layouts/ShelfPage/ShelfPage";
 import { oktaConfig } from "./lib/oktaConfig";
-import { OktaAuth, toRelativeUrl } from "@okta/okta-auth-js";
-import { Security, LoginCallback, SecureRoute } from "@okta/okta-react";
 import { MessagesPage } from "./layouts/MessagesPage/MessagesPage";
 import LoginWidget from './Auth/LoginWidget';
 import ProtectedRoute from "./layouts/Utils/ProtectedRoute";
@@ -50,9 +52,11 @@ export const App = () => {
               element={<LoginWidget config={oktaConfig} />}
             />
             <Route path="/login/callback" element={<LoginCallback />} />
-            <Route path="/shelf" element={<ShelfPage />} />
+            {/* <Route path="/shelf" element={<ShelfPage />} /> */}
+            <Route path="/shelf" element={<ProtectedRoute outlet={<ShelfPage />}/>} />
             {/* <Route path="/messages" element={<MessagesPage />} /> */}
             <Route path="/messages" element={<ProtectedRoute outlet={<MessagesPage />}/>} />
+            <Route path="/admin" element={<ProtectedRoute outlet={<ManageLibraryPage />}/>} />
             
           </Routes>
         </div>
