@@ -45,6 +45,9 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+# OpenSSL Setup
+https://github.com/darbyluv2code/fullstack-react-and-springboot/blob/main/bonus-content/openssl-setup.md
+
 # Test User Account
 user: test@email.com
 pwd: LibraryApp2023

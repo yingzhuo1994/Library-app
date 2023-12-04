@@ -19,4 +19,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Modifying
     @Query("delete from Review r where r.bookId = :book_id")
     void deleteAllByBookId(@Param("book_id") Long bookId);
+//    should use parameter in Review, not column name.
 }

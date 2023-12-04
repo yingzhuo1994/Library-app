@@ -17,6 +17,7 @@ import { oktaConfig } from "./lib/oktaConfig";
 import { MessagesPage } from "./layouts/MessagesPage/MessagesPage";
 import LoginWidget from './Auth/LoginWidget';
 import ProtectedRoute from "./layouts/Utils/ProtectedRoute";
+import { PaymentPage } from "./layouts/PaymentPage/PaymentPage";
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -57,6 +58,7 @@ export const App = () => {
             {/* <Route path="/messages" element={<MessagesPage />} /> */}
             <Route path="/messages" element={<ProtectedRoute outlet={<MessagesPage />}/>} />
             <Route path="/admin" element={<ProtectedRoute outlet={<ManageLibraryPage />}/>} />
+            <Route path="/fees" element={<ProtectedRoute outlet={<PaymentPage />}/>} />
             
           </Routes>
         </div>
